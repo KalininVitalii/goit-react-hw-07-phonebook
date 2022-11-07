@@ -1,17 +1,21 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { selectedContacts } from 'redux/contact-selectors';
+import { selectedContacts, selectedFilter } from 'redux/contact-selectors';
 import { deleteUser } from 'redux/operations';
 import { List, Button } from './ContactList.styled';
 import Avatar from 'react-avatar';
 
 export const ContactList = () => {
   const contacts = useSelector(selectedContacts);
-
+  const filter = useSelector(selectedFilter);
   const dispatch = useDispatch();
+
+  const filterList = contacts.filter(({ name }) =>
+    name.toLowerCase().includes(filter)
+  );
 
   return (
     <ul>
-      {contacts.map(({ id, name, phone }) => (
+      {filterList.map(({ id, name, phone }) => (
         <List key={id}>
           <span>
             <Avatar round={true} size={25} name={name} />
